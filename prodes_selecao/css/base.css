@@ -1,0 +1,125 @@
+/* base.css — tokens de cor, reset e componentes sem namespace.
+   Os componentes da página (.a4, .fl-*) ficam em layout.css. */
+
+:root{
+  --surface-1:#fcfcfb; --surface-2:#fff; --surface-3:#eae8e0; --line:#e4e3df;
+  --text-primary:#2a2a28; --text-secondary:#54534c; --text-muted:#83817a;
+  --brand-lime:#c3d968; --brand-green:#6b9c5a; --brand-dark:#385a31;
+  --warning:#c9861f; --critical:#b3452e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+/* Quem configurou o sistema para menos animação recebe salto direto, sem rolagem */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.01ms !important}
+}
+body{
+  margin:0; background:var(--surface-2); color:var(--text-primary);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+/* TABELA DE BOLSAS — §2, dentro do bloco de CTA */
+table.bolsa-compact{width:100%; border-collapse:collapse; font-size:11px}
+table.bolsa-compact th{text-align:left; color:var(--text-muted); font-weight:600; padding:1px 10px 4px 0; border-bottom:1px solid var(--brand-dark)}
+table.bolsa-compact td{padding:3px 10px 3px 0; border-bottom:1px solid var(--line)}
+table.bolsa-compact td.num{text-align:right; font-variant-numeric:tabular-nums; font-weight:600; color:var(--text-secondary)}
+
+.section-title{font-weight:800; font-size:19px; margin-bottom:20px; text-align:center}
+
+/* Cidades clicáveis dentro da tabela de distribuição */
+.clickable{cursor:pointer; transition:color .12s}
+.clickable:hover{color:var(--brand-green); text-decoration:underline}
+
+/* TABELA DE DISTRIBUIÇÃO — §4, um bloco por edital, linhas expansíveis */
+.dist-block{max-width:680px; margin:0 auto}
+.dist-block + .dist-block{margin-top:28px}
+.dist-edital-title{
+  font-size:13px; font-weight:800; color:var(--brand-dark); text-transform:uppercase; letter-spacing:.03em;
+  margin:0 0 10px; padding-bottom:6px; border-bottom:2px solid var(--brand-lime);
+}
+.dist-table{max-width:680px; margin:0 auto}
+.dist-header{
+  padding:0 4px 8px; margin-bottom:2px; border-bottom:2px solid var(--brand-dark);
+  font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.02em;
+}
+.dist-header .dist-col-sort{cursor:pointer; user-select:none; text-align:left; white-space:nowrap}
+.dist-header .dist-col-sort:nth-child(3), .dist-header .dist-col-sort:nth-child(4){text-align:right}
+.dist-header .dist-col-sort:hover{color:var(--brand-green)}
+.dist-header .dist-col-sort.active{color:var(--brand-dark)}
+.dist-row{border-bottom:1px solid var(--line); padding:0 8px; margin:0 -8px; border-radius:6px}
+.dist-row:nth-of-type(even){background:rgba(234,232,224,.55)}
+/* A tabela é o corpo da página — 46 linhas — então cada pixel por linha vira
+   muita rolagem. Daí o respiro curto, a fonte menor e o nome sem negrito:
+   o único peso forte da linha é a contagem de vagas, que é o que se procura. */
+.dist-row summary{
+  list-style:none; cursor:pointer; padding:6px 4px; font-size:12.5px; line-height:1.35;
+}
+.dist-row summary::-webkit-details-marker{display:none}
+/* No celular a linha usa 2 colunas e joga nível/cidades para uma 2ª linha.
+   A partir de 640px vira a tabela de 4 colunas. Cabeçalho e linhas compartilham
+   este mesmo grid, por isso o posicionamento é explícito nos dois.
+   A seta do accordion NÃO tem coluna própria: ela é absoluta, dentro do recuo
+   que .dist-row já reserva (padding 8px + margin -8px). O glifo mede 9px — uma
+   coluna só para ele custava 26px de largura por linha, o que no celular vira
+   nome quebrando em mais linhas. */
+.dist-row-grid{
+  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 10px; align-items:start;
+  position:relative;
+}
+.dist-row .perfil-name{grid-column:1; grid-row:1}
+.dist-row .perfil-count{grid-column:2; grid-row:1}
+.dist-row .perfil-nivel{grid-column:1; grid-row:2}
+.dist-row .perfil-cidades{grid-column:2; grid-row:2}
+.dist-header > *:nth-child(1){grid-column:1; grid-row:1}
+.dist-header > *:nth-child(2){grid-column:1; grid-row:2}
+.dist-header > *:nth-child(3){grid-column:2; grid-row:2}
+.dist-header > *:nth-child(4){grid-column:2; grid-row:1}
+.dist-row .dist-row-grid::before{
+  content:'▸'; color:var(--brand-green); font-size:11px; line-height:1.6;
+  position:absolute; left:-11px; top:0; transition:transform .15s;
+}
+.dist-row[open] .dist-row-grid::before{transform:rotate(90deg)}
+.dist-row .perfil-name{font-weight:500; color:var(--text-primary)}
+.dist-row .perfil-nivel{font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; white-space:nowrap}
+.dist-row .perfil-cidades{font-size:10.5px; color:var(--text-muted); text-align:right; white-space:nowrap}
+.dist-row .perfil-count{font-variant-numeric:tabular-nums; font-weight:800; color:var(--brand-dark); text-align:right; white-space:nowrap}
+.dist-cidades{padding:0 4px 12px 22px; display:flex; flex-wrap:wrap; gap:6px 16px}
+.dist-cidade{font-size:12px; color:var(--text-secondary)}
+.dist-cidade b{color:var(--text-primary); font-variant-numeric:tabular-nums; font-weight:700}
+
+@media (min-width:640px){
+  /* Larguras fixas (e não `auto`) porque cabeçalho e linhas são grids independentes:
+     com `auto` cada um dimensionaria por conta e as colunas desalinhariam.
+     Os valores vêm da medição do texto mais longo de cada coluna nas 46 linhas —
+     "Doutorado" 67px, "13 cidades" 50px, "26 vagas" 54px — mais uma folga curta.
+     Ao mexer na fonte da tabela, remedir: sobra aqui vira rolagem lá embaixo. */
+  .dist-row-grid{grid-template-columns:1fr 70px 54px 58px; gap:14px 12px}
+  .dist-row .perfil-name, .dist-row .perfil-nivel,
+  .dist-row .perfil-cidades, .dist-row .perfil-count,
+  /* :nth-child() tem a mesma especificidade de classe, então o reset do cabeçalho
+     precisa repetir o seletor — um `.dist-header > *` genérico perderia. */
+  .dist-header > *:nth-child(1), .dist-header > *:nth-child(2),
+  .dist-header > *:nth-child(3), .dist-header > *:nth-child(4){grid-column:auto; grid-row:auto}
+}
+
+/* BOTÕES DE EDITAL — §2, links para o edital no site da FAPESQ */
+.pill{
+  display:inline-block; padding:11px 26px; border-radius:24px; font-size:14px; font-weight:800;
+  border:2px solid var(--brand-dark); color:var(--brand-dark); background:transparent; margin: 10px;
+}
+.pill.solid{background:var(--brand-dark); color:#fff; border-color:var(--brand-dark);
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.pill.solid:hover{
+  opacity: 0.85;
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+/* Segunda linha do botão: para quem aquele edital serve */
+.pill-sub{
+  display:block; font-size:11px; font-weight:600; letter-spacing:.02em;
+  text-transform:uppercase; opacity:.8; margin-top:1px;
+}

@@ -1,0 +1,110 @@
+/* layout.css — a página em si: o container e os blocos com namespace .fl-*.
+   Tokens, reset e componentes sem namespace ficam em base.css.
+
+   Mobile-first: as regras base valem para celular (o público chega pelo QR) e as
+   media queries acrescentam o que só faz sentido em telas maiores. */
+.flyer-scale-wrap{display:flex; justify-content:center; background:var(--surface-2)}
+.a4{
+  width:100%; max-width:794px; background:#fff;
+  padding:20px 16px; box-sizing:border-box;
+}
+.fl-header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:20px}
+.fl-header img{height:26px; width:auto; display:block}
+.fl-eyebrow{
+  font-size:11px; font-weight:1000; color:var(--brand-dark); text-transform:uppercase; letter-spacing:.05em;
+  order:3; flex-basis:100%; text-align:center;
+}
+/* §2 ATALHO — linha discreta; o botão de verdade é o CTA do fim (§5) */
+.fl-shortcut{
+  display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 14px;
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  padding:9px 0; font-size:12.5px; color:var(--text-secondary);
+}
+.fl-shortcut b{color:var(--critical); font-weight:800}
+.fl-shortcut-link{color:var(--brand-dark); font-weight:700; text-decoration:underline; text-underline-offset:2px}
+.fl-shortcut-link:hover{color:var(--brand-green)}
+
+/* §3 ABERTURA — a frase é o filtro */
+.fl-hero{
+  display:flex; flex-direction:column; align-items:center; gap:18px; margin:24px 0 30px;
+}
+.fl-lead{text-align:center}
+.fl-lead-count-line{margin:0 0 14px; font-size:19px; color:var(--text-secondary)}
+.fl-lead-filters{display:flex; flex-direction:column; align-items:center; gap:12px}
+.fl-lead-count{
+  font-size:38px; font-weight:800; color:var(--brand-dark); line-height:1;
+  vertical-align:-4px; padding:0 4px; margin-right:2px;
+  /* realce tipo marca-texto: a lime cobre só o terço inferior do número,
+     trazendo a cor da marca sem virar um filete solto embaixo */
+  background:linear-gradient(to bottom, transparent 64%, var(--brand-lime) 64%);
+}
+.fl-lead-label{font-weight:700; color:var(--text-primary)}
+/* Os campos vivem dentro da frase, então são inline — mas precisam de position
+   relative porque o painel do dropdown é posicionado em relação a eles. */
+.fl-scope-field{display:inline-flex; align-items:center; vertical-align:baseline; position:relative}
+.fl-scope-field .fl-field{font-size:17px; font-weight:800; text-align:center}
+#muniInputFlyer{color:var(--brand-green)}
+.fl-field{
+  border:none; border-bottom:3px dashed var(--line); background:transparent; font:inherit; font-weight:inherit;
+  color:inherit; text-align:center; outline:none; min-width:140px; max-width:100%; padding:0 2px;
+}
+.fl-field::placeholder{color:#b9b7ae; font-weight:800; opacity:1}
+.fl-field:focus{border-bottom-color:var(--brand-green)}
+.fl-field.invalid{border-bottom-color:var(--critical)}
+.fl-bolsa-inline{background:var(--surface-3); border-radius:10px; padding:8px 14px; width:100%; max-width:220px}
+.fl-main{margin-bottom:20px}
+.fl-main .section-title{font-size:16px; font-weight:800; text-align:center; margin-bottom:10px}
+.fl-field-row{display:inline-flex; align-items:baseline; cursor:pointer}
+.fl-field-arrow{margin-left:4px; font-size:11px; color:var(--brand-green); display:inline-block; transition:transform .15s}
+.fl-scope-field.open .fl-field-arrow{transform:rotate(180deg)}
+.fl-dropdown-panel{
+  position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:8px; z-index:40;
+  background:var(--surface-2, #fff); border:1px solid var(--line); border-radius:10px;
+  box-shadow:0 10px 28px rgba(0,0,0,.14);
+  width:max-content; min-width:220px; max-width:min(280px, calc(100vw - 32px)); max-height:260px;
+  overflow-y:auto; padding:4px; text-align:left;
+}
+.fl-dropdown-option{
+  padding:7px 10px; font-size:13px; font-weight:600; border-radius:6px; cursor:pointer; white-space:normal;
+  text-transform:none; color:var(--text-primary);
+}
+.fl-dropdown-option:hover, .fl-dropdown-option.active{background:var(--surface-3)}
+.fl-dropdown-reset{color:var(--text-muted); border-bottom:1px solid var(--line); border-radius:0; margin-bottom:4px; padding-bottom:8px}
+.fl-dropdown-empty{padding:8px 10px; font-size:13px; color:var(--text-muted)}
+/* §5 CTA PRINCIPAL — o elemento mais forte da página, depois da tabela.
+   Alvo do atalho do topo (#cta); tabindex="-1" para o foco do teclado
+   acompanhar a rolagem, e scroll-margin para não colar no topo da janela. */
+.fl-cta{
+  border-top:2px solid var(--brand-lime); padding-top:26px; text-align:center;
+  scroll-margin-top:16px; outline:none;
+}
+.fl-cta-lead{
+  font-size:21px; font-weight:800; line-height:1.25; color:var(--text-primary); margin:0 0 8px;
+}
+.fl-cta-text{
+  font-size:14px; line-height:1.5; color:var(--text-secondary);
+  max-width:46ch; margin:0 auto 20px;
+}
+.fl-cta .fl-editais{display:flex; flex-wrap:wrap; justify-content:center; gap:12px}
+.fl-cta .fl-editais .pill{margin:0}
+.fl-cta-prazo{
+  font-size:14px; font-weight:700; color:var(--critical); margin:20px 0 0;
+}
+.fl-cta-prazo b{font-weight:800}
+
+/* ===== Telas médias em diante ===== */
+@media (min-width:640px){
+  .a4{padding:28px 32px}
+  .fl-header img{height:30px}
+  .fl-eyebrow{order:0; flex-basis:auto; text-align:center}
+  .fl-shortcut{justify-content:space-between; font-size:13px}
+  .fl-hero{gap:22px}
+  .fl-lead-count-line{font-size:21px; margin-bottom:16px}
+  .fl-lead-count{font-size:44px}
+  /* Em tela larga os três campos cabem lado a lado. Como são itens de flex, se não
+     couberem eles descem inteiros para a linha seguinte — nunca partem no meio. */
+  .fl-lead-filters{flex-direction:row; justify-content:center; flex-wrap:wrap; gap:14px 28px}
+  .fl-scope-field .fl-field{font-size:19px}
+  .fl-bolsa-inline{width:auto; min-width:200px}
+  .fl-cta-lead{font-size:24px}
+}
