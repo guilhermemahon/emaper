@@ -8,28 +8,25 @@
   width:100%; max-width:794px; background:#fff;
   padding:20px 16px; box-sizing:border-box;
 }
-.fl-header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:20px}
-.fl-header img{height:26px; width:auto; display:block}
-.fl-eyebrow{
-  font-size:11px; font-weight:1000; color:var(--brand-dark); text-transform:uppercase; letter-spacing:.05em;
-  order:3; flex-basis:100%; text-align:center;
+/* Só duas logos: sempre cabem lado a lado, em qualquer largura. */
+.fl-header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px}
+.fl-header img{height:28px; width:auto; display:block; flex:0 0 auto}
+/* Nome do programa — rótulo do que a peça anuncia, logo acima da contagem. Numa linha
+   própria ele não disputa largura com as logos, então pode crescer; o respiro em volta
+   é que o separa da contagem, sem precisar de régua.
+   Sem max-width de propósito: limitar a caixa quebrava o nome em 3 linhas no celular,
+   quando nos 343px disponíveis ele cabe em 2 — e a linha a mais empurrava o prazo do CTA
+   para fora da primeira tela. */
+.fl-program{
+  font-size:14px; font-weight:1000; color:var(--brand-dark); text-transform:uppercase;
+  letter-spacing:.06em; line-height:1.35; text-align:center; margin:0;
 }
-/* §2 ATALHO — linha discreta; o botão de verdade é o CTA do fim (§5) */
-.fl-shortcut{
-  display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 14px;
-  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-  padding:9px 0; font-size:12.5px; color:var(--text-secondary);
-}
-.fl-shortcut b{color:var(--critical); font-weight:800}
-.fl-shortcut-link{color:var(--brand-dark); font-weight:700; text-decoration:underline; text-underline-offset:2px}
-.fl-shortcut-link:hover{color:var(--brand-green)}
-
 /* §3 ABERTURA — a frase é o filtro */
 .fl-hero{
   display:flex; flex-direction:column; align-items:center; gap:18px; margin:24px 0 30px;
 }
 .fl-lead{text-align:center}
-.fl-lead-count-line{margin:0 0 14px; font-size:19px; color:var(--text-secondary)}
+.fl-lead-count-line{margin:0 0 18px; font-size:19px; color:var(--text-secondary)}
 .fl-lead-filters{display:flex; flex-direction:column; align-items:center; gap:12px}
 .fl-lead-count{
   font-size:38px; font-weight:800; color:var(--brand-dark); line-height:1;
@@ -45,18 +42,31 @@
 .fl-scope-field .fl-field{font-size:17px; font-weight:800; text-align:center}
 #muniInputFlyer{color:var(--brand-green)}
 .fl-field{
-  border:none; border-bottom:3px dashed var(--line); background:transparent; font:inherit; font-weight:inherit;
-  color:inherit; text-align:center; outline:none; min-width:140px; max-width:100%; padding:0 2px;
+  border:none; background:transparent; font:inherit; font-weight:inherit;
+  color:inherit; text-align:center; outline:none; min-width:130px; max-width:100%; padding:0;
+  cursor:pointer;
 }
 .fl-field::placeholder{color:#b9b7ae; font-weight:800; opacity:1}
-.fl-field:focus{border-bottom-color:var(--brand-green)}
-.fl-field.invalid{border-bottom-color:var(--critical)}
+.fl-field.invalid{color:var(--critical)}
 .fl-bolsa-inline{background:var(--surface-3); border-radius:10px; padding:8px 14px; width:100%; max-width:220px}
 .fl-main{margin-bottom:20px}
-.fl-main .section-title{font-size:16px; font-weight:800; text-align:center; margin-bottom:10px}
-.fl-field-row{display:inline-flex; align-items:baseline; cursor:pointer}
-.fl-field-arrow{margin-left:4px; font-size:11px; color:var(--brand-green); display:inline-block; transition:transform .15s}
-.fl-scope-field.open .fl-field-arrow{transform:rotate(180deg)}
+/* O campo é um dropdown, não uma linha para preencher: por isso a caixa. O sublinhado
+   tracejado anterior lia como formulário e não sugeria que ali se clica. */
+.fl-field-row{
+  display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+  background:var(--surface-3); border:1px solid var(--line); border-radius:10px;
+  padding:7px 14px; transition:border-color .15s, background .15s, box-shadow .15s;
+}
+.fl-field-row:hover{border-color:var(--brand-green)}
+.fl-field-row:has(.invalid){border-color:var(--critical)}
+.fl-scope-field.open .fl-field-row,
+.fl-field-row:focus-within{
+  background:var(--surface-2); border-color:var(--brand-green);
+  box-shadow:0 0 0 3px rgba(107,156,90,.15);
+}
+/* Fechada a seta aponta para o nome; aberta, para baixo — o mesmo glifo girado. */
+.fl-field-arrow{font-size:14px; line-height:1; color:var(--brand-green); display:inline-block; transition:transform .15s; transform:rotate(90deg)}
+.fl-scope-field.open .fl-field-arrow{transform:rotate(0deg)}
 .fl-dropdown-panel{
   position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:8px; z-index:40;
   background:var(--surface-2, #fff); border:1px solid var(--line); border-radius:10px;
@@ -65,8 +75,16 @@
   overflow-y:auto; padding:4px; text-align:left;
 }
 .fl-dropdown-option{
+  display:flex; align-items:baseline; gap:10px;
   padding:7px 10px; font-size:13px; font-weight:600; border-radius:6px; cursor:pointer; white-space:normal;
   text-transform:none; color:var(--text-primary);
+}
+.opt-nome{flex:1 1 auto; min-width:0}
+/* A contagem é referência, não o rótulo: peso de metadado e largura fixa, para os números
+   ficarem alinhados numa coluna e a lista poder ser lida de cima para baixo. */
+.opt-count{
+  flex:0 0 auto; min-width:2.2em; text-align:right;
+  font-size:11px; font-weight:700; color:var(--text-muted); font-variant-numeric:tabular-nums;
 }
 .fl-dropdown-option:hover, .fl-dropdown-option.active{background:var(--surface-3)}
 .fl-dropdown-reset{color:var(--text-muted); border-bottom:1px solid var(--line); border-radius:0; margin-bottom:4px; padding-bottom:8px}
@@ -74,8 +92,13 @@
 /* §5 CTA PRINCIPAL — o elemento mais forte da página, depois da tabela.
    Alvo do atalho do topo (#cta); tabindex="-1" para o foco do teclado
    acompanhar a rolagem, e scroll-margin para não colar no topo da janela. */
+/* Divisor fino e cinza, igual ao da §6 — e não a lima de 2px que estava aqui antes: ela
+   é idêntica ao sublinhado dos títulos de edital, então as duas se confundiam (é fim de
+   seção ou título de tabela?), ainda mais com os blocos fechados, quando as linhas ficam
+   próximas. Agora a regra é única: lima 2px = título de tabela; cinza 1px = fim de seção.
+   O peso do CTA vem do tamanho do texto e do respiro, não de um filete. */
 .fl-cta{
-  border-top:2px solid var(--brand-lime); padding-top:26px; text-align:center;
+  border-top:1px solid var(--line); padding-top:26px; text-align:center;
   scroll-margin-top:16px; outline:none;
 }
 .fl-cta-lead{
@@ -92,19 +115,99 @@
 }
 .fl-cta-prazo b{font-weight:800}
 
+/* §6 AJUDA — opcional, mais discreta que o CTA: peso visual menor porque quem já
+   sabe o que fazer não precisa parar aqui. */
+.fl-help{
+  border-top:1px solid var(--line); margin-top:26px; padding-top:22px; text-align:center;
+}
+.fl-help-lead{font-size:15px; font-weight:800; color:var(--text-primary); margin:0 0 16px}
+.fl-help-text{font-size:13px; line-height:1.5; color:var(--text-secondary); max-width:42ch; margin:0 auto 12px}
+/* Tudo num eixo só, e os dois itens com a mesma largura — é o alinhamento entre eles que
+   faz a seção parecer composta, e não centralizada por acidente. */
+.fl-help-stack{display:flex; flex-direction:column; align-items:center; gap:24px}
+.fl-help-item{width:100%; max-width:360px}
+
+/* Botão do WhatsApp — bloco da largura do vídeo, para as duas saídas terem peso parecido.
+   Verde do WhatsApp (e não o verde da marca) porque é o sinal que a pessoa reconhece, e
+   porque assim ele não se confunde com os botões de edital do CTA, que são a ação principal. */
+.fl-wa{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  width:100%; padding:14px 20px; border-radius:14px;
+  background:#25D366; color:#fff; text-decoration:none;
+  box-shadow:0 2px 8px rgba(37,211,102,.28);
+  transition:background .15s, transform .15s, box-shadow .15s;
+}
+.fl-wa:hover{background:#1da851; transform:translateY(-2px); box-shadow:0 8px 18px rgba(37,211,102,.38)}
+.fl-wa:active{transform:translateY(0)}
+.fl-wa-icon{flex:0 0 auto; width:28px; height:28px}
+.fl-wa-text{display:flex; flex-direction:column; align-items:center; line-height:1.25}
+.fl-wa-label{font-size:15px; font-weight:800}
+.fl-wa-num{font-size:12.5px; font-weight:600; opacity:.92; font-variant-numeric:tabular-nums}
+/* Miniatura do vídeo (facade): a imagem hqdefault vem em 480x360 (4:3, com barras
+   pretas no topo/base); recortamos para 16:9 via object-fit para preencher o quadro. */
+.fl-yt-facade{
+  position:relative; width:100%; aspect-ratio:16/9; margin:0 auto;
+  border-radius:10px; overflow:hidden; cursor:pointer; background:#000;
+}
+.fl-yt-facade img{width:100%; height:100%; object-fit:cover; display:block}
+.fl-yt-play{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:52px; height:52px; border-radius:50%; background:rgba(0,0,0,.65);
+  color:#fff; font-size:18px; display:flex; align-items:center; justify-content:center;
+  padding-left:3px; transition:background .15s;
+}
+.fl-yt-facade:hover .fl-yt-play{background:var(--brand-dark)}
+.fl-yt-facade iframe{width:100%; height:100%; display:block; border:0}
+
 /* ===== Telas médias em diante ===== */
 @media (min-width:640px){
   .a4{padding:28px 32px}
-  .fl-header img{height:30px}
-  .fl-eyebrow{order:0; flex-basis:auto; text-align:center}
-  .fl-shortcut{justify-content:space-between; font-size:13px}
+  /* Sem a barra da §2 abaixo dele, o cabeçalho é o topo inteiro da peça. */
+  .fl-header img{height:38px}
+  .fl-header{margin-bottom:26px}
+  /* Com a coluna inteira (730px) para si, o nome cabe em uma linha até 19px — pede 425px
+     a 11,5px, ou seja ~703px a 19px. Fico em 17px para deixar folga de renderização e
+     para não competir com o número da contagem, que é o herói da seção. */
+  /* O `margin-bottom` soma ao gap do .fl-hero (22px) para o respiro depois do nome bater
+     com os 26px do cabeçalho acima — o nome fica isolado por espaço igual dos dois lados. */
+  .fl-program{font-size:17px; letter-spacing:.08em; margin-bottom:6px}
   .fl-hero{gap:22px}
-  .fl-lead-count-line{font-size:21px; margin-bottom:16px}
+  .fl-lead-count-line{font-size:21px; margin-bottom:24px}
   .fl-lead-count{font-size:44px}
   /* Em tela larga os três campos cabem lado a lado. Como são itens de flex, se não
      couberem eles descem inteiros para a linha seguinte — nunca partem no meio. */
   .fl-lead-filters{flex-direction:row; justify-content:center; flex-wrap:wrap; gap:14px 28px}
   .fl-scope-field .fl-field{font-size:19px}
-  .fl-bolsa-inline{width:auto; min-width:200px}
+  /* Em tela larga a tabela de bolsas vira uma faixa horizontal: como caixa de 3 linhas
+     ela ficava solta no meio de uma faixa vazia, sem relação visual com nada. Deitada,
+     lê como legenda da linha de filtros logo acima — que é o que ela é. O cabeçalho
+     "Nível | Bolsa" fica oculto visualmente (segue no leitor de tela): deitado, cada
+     par já se explica. Os seletores repetem `table.bolsa-compact` porque a regra de
+     base tem essa especificidade (0,1,2) e venceria um `.fl-bolsa-inline td` (0,1,1). */
+  .fl-bolsa-inline{width:auto; max-width:none; min-width:0; padding:9px 24px; border-radius:999px}
+  .fl-bolsa-inline table.bolsa-compact{display:block; width:auto}
+  .fl-bolsa-inline table.bolsa-compact thead{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%)}
+  .fl-bolsa-inline table.bolsa-compact tbody{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 24px}
+  .fl-bolsa-inline table.bolsa-compact tr{display:flex; align-items:baseline; gap:7px}
+  .fl-bolsa-inline table.bolsa-compact td{
+    border:none; padding:0; font-size:11.5px; font-weight:700;
+    color:var(--text-muted); text-transform:uppercase; letter-spacing:.02em;
+  }
+  .fl-bolsa-inline table.bolsa-compact td.num{
+    font-size:12.5px; font-weight:800; color:var(--text-primary); text-transform:none; letter-spacing:0;
+  }
   .fl-cta-lead{font-size:24px}
+  /* Mais respiro entre as seções quando há altura de sobra. No celular estes valores
+     ficam curtos de propósito: lá cada pixel a mais é rolagem. */
+  .fl-hero{margin:30px 0 36px}
+  .fl-main{margin-bottom:28px}
+  .fl-cta{padding-top:32px}
+  .fl-help{margin-top:32px; padding-top:26px}
+  /* A seção mantém o eixo único em qualquer largura. Só o respiro cresce. */
+  .fl-help-stack{gap:28px}
+  .fl-help-item{max-width:400px}
 }
+
+/* O ponto de corte que existia aqui (o nome do programa subindo para o meio das logos a
+   partir de 780px) sumiu junto com o arranjo: numa linha própria, o nome não disputa
+   largura com nada, então não há mais o que negociar por faixa de tela. */

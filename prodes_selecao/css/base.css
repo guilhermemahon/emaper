@@ -25,26 +25,43 @@ table.bolsa-compact th{text-align:left; color:var(--text-muted); font-weight:600
 table.bolsa-compact td{padding:3px 10px 3px 0; border-bottom:1px solid var(--line)}
 table.bolsa-compact td.num{text-align:right; font-variant-numeric:tabular-nums; font-weight:600; color:var(--text-secondary)}
 
-.section-title{font-weight:800; font-size:19px; margin-bottom:20px; text-align:center}
-
 /* Cidades clicáveis dentro da tabela de distribuição */
 .clickable{cursor:pointer; transition:color .12s}
 .clickable:hover{color:var(--brand-green); text-decoration:underline}
 
 /* TABELA DE DISTRIBUIÇÃO — §4, um bloco por edital, linhas expansíveis */
-.dist-block{max-width:680px; margin:0 auto}
+/* Sem cap próprio: a tabela acompanha a largura da coluna, que o .a4 já limita em
+   794px − 64px de padding = 730px. Antes eram 680px fixos, o que deixava a tabela
+   recuada em relação à barra do §2 e ao cabeçalho — duas larguras de conteúdo na mesma
+   página. Alinhar as duas ainda devolveu 50px à coluna do nome (−34px de altura). */
+.dist-block{margin:0 auto}
 .dist-block + .dist-block{margin-top:28px}
+/* Título do bloco = o próprio controle de abrir/fechar. A seta fica à esquerda, no mesmo
+   vocabulário das linhas, mas maior: aqui ela comanda a seção inteira. */
 .dist-edital-title{
+  display:flex; align-items:baseline; gap:8px; cursor:pointer; list-style:none;
   font-size:13px; font-weight:800; color:var(--brand-dark); text-transform:uppercase; letter-spacing:.03em;
   margin:0 0 10px; padding-bottom:6px; border-bottom:2px solid var(--brand-lime);
 }
-.dist-table{max-width:680px; margin:0 auto}
+.dist-edital-title::-webkit-details-marker{display:none}
+.dist-edital-title::before{
+  content:'▸'; font-size:15px; line-height:1; color:var(--brand-green);
+  transition:transform .15s; flex:0 0 auto;
+}
+.dist-block[open] > .dist-edital-title::before{transform:rotate(90deg)}
+.dist-edital-title:hover{color:var(--brand-green)}
+/* Empurrada para a direita: fechado, o título ainda diz quanta vaga há lá dentro. */
+.dist-edital-count{
+  margin-left:auto; font-size:11px; font-weight:700; color:var(--text-muted);
+  letter-spacing:.02em; white-space:nowrap;
+}
+.dist-table{margin:0 auto}
 .dist-header{
   padding:0 4px 8px; margin-bottom:2px; border-bottom:2px solid var(--brand-dark);
   font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.02em;
 }
 .dist-header .dist-col-sort{cursor:pointer; user-select:none; text-align:left; white-space:nowrap}
-.dist-header .dist-col-sort:nth-child(3), .dist-header .dist-col-sort:nth-child(4){text-align:right}
+.dist-header .dist-col-sort:nth-child(2){text-align:right}
 .dist-header .dist-col-sort:hover{color:var(--brand-green)}
 .dist-header .dist-col-sort.active{color:var(--brand-dark)}
 .dist-row{border-bottom:1px solid var(--line); padding:0 8px; margin:0 -8px; border-radius:6px}
@@ -56,51 +73,49 @@ table.bolsa-compact td.num{text-align:right; font-variant-numeric:tabular-nums; 
   list-style:none; cursor:pointer; padding:6px 4px; font-size:12.5px; line-height:1.35;
 }
 .dist-row summary::-webkit-details-marker{display:none}
-/* No celular a linha usa 2 colunas e joga nível/cidades para uma 2ª linha.
-   A partir de 640px vira a tabela de 4 colunas. Cabeçalho e linhas compartilham
-   este mesmo grid, por isso o posicionamento é explícito nos dois.
-   A seta do accordion NÃO tem coluna própria: ela é absoluta, dentro do recuo
+/* A seta do accordion NÃO tem coluna própria: ela é absoluta, dentro do recuo
    que .dist-row já reserva (padding 8px + margin -8px). O glifo mede 9px — uma
    coluna só para ele custava 26px de largura por linha, o que no celular vira
-   nome quebrando em mais linhas. */
+   nome quebrando em mais linhas.
+   Duas colunas só: o que identifica a vaga (subprojeto, perfil, nome, nível quando
+   falta, nº de cidades) é texto corrido numa célula, e a contagem de vagas — o número
+   que se procura — é a única coluna fixa. Colunas fixas reservam a largura do maior
+   valor em TODAS as linhas; como texto, cada linha usa só o que precisa. */
 .dist-row-grid{
-  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 10px; align-items:start;
+  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 12px; align-items:baseline;
   position:relative;
 }
-.dist-row .perfil-name{grid-column:1; grid-row:1}
-.dist-row .perfil-count{grid-column:2; grid-row:1}
-.dist-row .perfil-nivel{grid-column:1; grid-row:2}
-.dist-row .perfil-cidades{grid-column:2; grid-row:2}
-.dist-header > *:nth-child(1){grid-column:1; grid-row:1}
-.dist-header > *:nth-child(2){grid-column:1; grid-row:2}
-.dist-header > *:nth-child(3){grid-column:2; grid-row:2}
-.dist-header > *:nth-child(4){grid-column:2; grid-row:1}
+/* A seta é a única pista de que a linha abre, então precisa de presença. Ela cabe no
+   recuo que .dist-row já reserva (padding 8px + margin -8px, mais os 4px do summary);
+   ao mexer no tamanho, conferir que o glifo não invade o texto nem vaza da linha. */
 .dist-row .dist-row-grid::before{
-  content:'▸'; color:var(--brand-green); font-size:11px; line-height:1.6;
-  position:absolute; left:-11px; top:0; transition:transform .15s;
+  content:'▸'; color:var(--brand-green); font-size:15px; line-height:1.15;
+  position:absolute; left:-12px; top:0; transition:transform .15s;
 }
 .dist-row[open] .dist-row-grid::before{transform:rotate(90deg)}
 .dist-row .perfil-name{font-weight:500; color:var(--text-primary)}
-.dist-row .perfil-nivel{font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; white-space:nowrap}
-.dist-row .perfil-cidades{font-size:10.5px; color:var(--text-muted); text-align:right; white-space:nowrap}
+/* Referência do edital (S… · P…): abre a linha, então precisa se distinguir do nome
+   sem competir com ele — daí cinza, e o rótulo por extenso só no title. */
+.dist-row .perfil-ref{font-weight:700; color:var(--text-muted); font-variant-numeric:tabular-nums; white-space:nowrap; cursor:help}
+/* Nível (quando o nome não o diz) e nº de cidades: peso de metadado, no fim da linha */
+.dist-row .perfil-meta{font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; white-space:nowrap}
+/* Sem o ponto, "DOUTORADO 1 CIDADE" lê como um bloco só. Medido: não custa altura. */
+.dist-row .perfil-meta::before{content:'· '; color:var(--line)}
+.dist-sub-nome{
+  margin:0 0 8px; padding:0 4px 0 22px; font-size:11px; line-height:1.4;
+  color:var(--text-muted); text-transform:none;
+}
 .dist-row .perfil-count{font-variant-numeric:tabular-nums; font-weight:800; color:var(--brand-dark); text-align:right; white-space:nowrap}
 .dist-cidades{padding:0 4px 12px 22px; display:flex; flex-wrap:wrap; gap:6px 16px}
 .dist-cidade{font-size:12px; color:var(--text-secondary)}
 .dist-cidade b{color:var(--text-primary); font-variant-numeric:tabular-nums; font-weight:700}
 
 @media (min-width:640px){
-  /* Larguras fixas (e não `auto`) porque cabeçalho e linhas são grids independentes:
-     com `auto` cada um dimensionaria por conta e as colunas desalinhariam.
-     Os valores vêm da medição do texto mais longo de cada coluna nas 46 linhas —
-     "Doutorado" 67px, "13 cidades" 50px, "26 vagas" 54px — mais uma folga curta.
-     Ao mexer na fonte da tabela, remedir: sobra aqui vira rolagem lá embaixo. */
-  .dist-row-grid{grid-template-columns:1fr 70px 54px 58px; gap:14px 12px}
-  .dist-row .perfil-name, .dist-row .perfil-nivel,
-  .dist-row .perfil-cidades, .dist-row .perfil-count,
-  /* :nth-child() tem a mesma especificidade de classe, então o reset do cabeçalho
-     precisa repetir o seletor — um `.dist-header > *` genérico perderia. */
-  .dist-header > *:nth-child(1), .dist-header > *:nth-child(2),
-  .dist-header > *:nth-child(3), .dist-header > *:nth-child(4){grid-column:auto; grid-row:auto}
+  /* Largura fixa (e não `auto`) na coluna de vagas porque cabeçalho e linhas são grids
+     independentes: com `auto` cada um dimensionaria por conta e as duas desalinhariam.
+     Os 58px vêm da medição de "26 vagas" (54px) mais uma folga curta. Ao mexer na fonte
+     da tabela, remedir: sobra aqui vira rolagem lá embaixo. */
+  .dist-row-grid{grid-template-columns:1fr 58px; gap:14px 12px}
 }
 
 /* BOTÕES DE EDITAL — §2, links para o edital no site da FAPESQ */

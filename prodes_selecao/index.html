@@ -41,28 +41,28 @@ gtag('config', 'G-ZWK82G765B');
   <div class="flyer-scale-wrap">
     <div class="a4" id="a4canvas">
       <!-- §1 -->
-      <!-- CABEÇALHO — logos + nome do programa -->
+      <!-- CABEÇALHO — só as duas logos: quem assina a peça. O nome do programa desceu
+           para a §3, onde tem a linha inteira. Espremido entre as logos ele ficava
+           limitado a 11,5px e obrigava a um ponto de corte só para caber. -->
       <div class="fl-header">
         <img src="assets/logo-empaer.png" alt="EMPAER" class="fl-logo-empaer">
-        <div class="fl-eyebrow">Programa de Apoio ao Desenvolvimento Rural Sustentável</div>
         <img src="assets/logo-fapesq.png" alt="FAPESQ" class="fl-logo-fapesq">
       </div>
 
-      <!-- §2 -->
-      <!-- ATALHO — para quem já conhece o processo. Rola até o CTA (§5) em vez de
-           repetir os links do edital: assim eles existem num lugar só, e quem usa o
-           atalho ainda passa pelo texto que explica o que vai encontrar lá. -->
-      <div class="fl-shortcut">
-        <span>Inscrições até <b>03/09/2026</b></span>
-        <a href="#cta" class="fl-shortcut-link">Ir direto aos editais <span aria-hidden="true">↓</span></a>
-      </div>
+      <!-- §2 REMOVIDA — era uma barra de atalho com o prazo e um "Ir direto aos editais ↓".
+           Com os blocos de edital fechados por padrão, a página inteira cabe numa tela: um
+           atalho para algo já visível é só ruído. O prazo continua na §5, junto dos links. -->
 
       <!-- §3 -->
-      <!-- ABERTURA — o filtro É o conteúdo: contagem + os três campos, cada um um
-           dropdown. Sem conectivos de propósito: como preposição é palavra curta, ela
-           sempre sobrava órfã no fim da linha quando o texto quebrava. Aqui os campos
-           são itens de flex, que nunca se partem no meio — a quebra é deliberada. -->
+      <!-- ABERTURA — o filtro É o conteúdo: contagem + os campos, cada um um dropdown.
+           Sem conectivos de propósito: como preposição é palavra curta, ela sempre sobrava
+           órfã no fim da linha quando o texto quebrava. Aqui os campos são itens de flex,
+           que nunca se partem no meio — a quebra é deliberada. -->
       <div class="fl-hero">
+        <!-- Único <h1> da página, que até agora não tinha nenhum. Aqui ele é o que a peça
+             anuncia, e a contagem logo abaixo é a resposta — por isso ele vem em corpo
+             menor que o número: rotula, não disputa. -->
+        <h1 class="fl-program">Programa de Apoio ao Desenvolvimento Rural Sustentável</h1>
         <div class="fl-lead">
           <p class="fl-lead-count-line">
             <b class="fl-lead-count" id="flCount">0</b>
@@ -70,13 +70,10 @@ gtag('config', 'G-ZWK82G765B');
           </p>
           <div class="fl-lead-filters">
             <div class="fl-scope-field" id="formField">
-              <span class="fl-field-row"><input id="formInputFlyer" class="fl-field" autocomplete="off" placeholder="diversas formações"><span class="fl-field-arrow">▾</span></span>
+              <span class="fl-field-row"><input id="formInputFlyer" class="fl-field" autocomplete="off" placeholder="Todas as formações"><span class="fl-field-arrow">▾</span></span>
             </div>
             <div class="fl-scope-field" id="muniField">
-              <span class="fl-field-row"><input id="muniInputFlyer" class="fl-field" autocomplete="off" placeholder="toda a Paraíba"><span class="fl-field-arrow">▾</span></span>
-            </div>
-            <div class="fl-scope-field" id="editalField">
-              <span class="fl-field-row"><input id="editalInputFlyer" class="fl-field" autocomplete="off" placeholder="editais 44 e 45"><span class="fl-field-arrow">▾</span></span>
+              <span class="fl-field-row"><input id="muniInputFlyer" class="fl-field" autocomplete="off" placeholder="Toda a Paraíba"><span class="fl-field-arrow">▾</span></span>
             </div>
           </div>
         </div>
@@ -87,9 +84,10 @@ gtag('config', 'G-ZWK82G765B');
       </div>
 
       <!-- §4 -->
-      <!-- DISTRIBUIÇÃO — bloco principal, vagas por perfil e cidade -->
+      <!-- DISTRIBUIÇÃO — bloco principal, vagas por perfil e cidade. Sem título de seção:
+           os dois blocos de edital já se anunciam, cada um com seu nome e sua contagem, e
+           um rótulo genérico acima deles só repetia o que eles dizem melhor. -->
       <div class="fl-main">
-        <div class="section-title">Distribuição por perfil e cidade</div>
         <div id="flDistTable"></div>
       </div>
 
@@ -108,6 +106,40 @@ gtag('config', 'G-ZWK82G765B');
           </a>
         </div>
         <p class="fl-cta-prazo">Inscrições até <b>03/09/2026</b> — não perca o prazo.</p>
+      </div>
+
+      <!-- §6 -->
+      <!-- AJUDA — opcional, para quem ainda tem dúvida depois do CTA. Fica depois dele
+           de propósito: quem já vai direto aos editais nunca precisa passar por aqui. -->
+      <div class="fl-help">
+        <p class="fl-help-lead">Ficou com dúvida?</p>
+        <!-- Um eixo central só, e os dois itens na MESMA largura (360px): o vídeo e o botão
+             se alinham em coluna, um sobre o outro. A versão anterior punha os dois lado a
+             lado numa grade, e o botão ficava boiando num espaço vazio do tamanho do vídeo.
+             O equilíbrio entre as duas saídas vem agora do peso do botão, não do arranjo. -->
+        <div class="fl-help-stack">
+          <div class="fl-help-item">
+            <p class="fl-help-text">Veja no vídeo como se inscrever na plataforma.</p>
+            <!-- Facade: só a thumbnail carrega de cara. O <iframe> real do YouTube (com seus
+                 scripts e cookies de terceiros) só entra no DOM se a pessoa clicar. -->
+            <div class="fl-yt-facade" data-yt-facade="pal6jBLCW34" role="button" tabindex="0" aria-label="Assistir ao vídeo de como se inscrever, no YouTube">
+              <img src="https://img.youtube.com/vi/pal6jBLCW34/hqdefault.jpg" alt="Miniatura do vídeo: como se inscrever na plataforma" loading="lazy">
+              <span class="fl-yt-play" aria-hidden="true">▶</span>
+            </div>
+          </div>
+          <div class="fl-help-item">
+            <p class="fl-help-text">Ou fale direto pelo WhatsApp.</p>
+            <a href="https://wa.me/5583991304486?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%20sobre%20a%20inscri%C3%A7%C3%A3o%20no%20PRODES." class="fl-wa" target="_blank" rel="noopener noreferrer" aria-label="Falar com o João no WhatsApp sobre dúvidas na inscrição (nova aba)">
+              <svg class="fl-wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.412-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2c-5.522 0-10 4.478-10 10 0 1.764.463 3.42 1.27 4.855L2 22l5.29-1.238A9.955 9.955 0 0012.004 22c5.523 0 10.001-4.478 10.001-10s-4.478-10-10.001-10zm0 18.2a8.17 8.17 0 01-4.166-1.14l-.298-.177-3.14.735.75-3.055-.194-.313A8.19 8.19 0 013.8 12c0-4.526 3.678-8.2 8.204-8.2 4.526 0 8.2 3.674 8.2 8.2 0 4.527-3.674 8.2-8.2 8.2z"/></svg>
+              <span class="fl-wa-text">
+                <span class="fl-wa-label">Falar com o João</span>
+                <!-- O número visível é o plano B: se o wa.me não abrir no aparelho da pessoa,
+                     ela ainda consegue salvar o contato e procurar na mão. -->
+                <span class="fl-wa-num">(83) 99130-4486</span>
+              </span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
